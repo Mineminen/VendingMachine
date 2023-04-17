@@ -23,7 +23,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
      
 
-
 <h1>大学校园自动售货机管理系统</h1>
 <div class="containerw3layouts-agileits">
     <div class="w3imageaits" style="height:373px;"><img src="<%=path%>/admin/img/web.jpeg" style="height:373px;"></div>
