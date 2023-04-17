@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.HelpsMapper">
+	<select id="findHelpsList"  resultType="Helps">
+		select * from helps 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultType="Helps">
+	    select * 
+        from helps a  	
+		<where>
+      		<if test="hid != null and hid != 0">
+		    and a.hid = #{hid}
+		</if>
+		<if test="htitle != null and htitle != ''">
+		    and a.htitle = #{htitle}
+		</if>
+		<if test="addtime != null and addtime != ''">
+		    and a.addtime = #{addtime}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+
+    order by ${sort} hid desc
+
+    <if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>	
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from helps a  
+		<where>
+      		<if test="hid != null and hid != 0">
+		    and a.hid = #{hid}
+		</if>
+		<if test="htitle != null and htitle != ''">
+		    and a.htitle = #{htitle}
+		</if>
+		<if test="addtime != null and addtime != ''">
+		    and a.addtime = #{addtime}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+	</select>	
+	
+	<select id="queryHelpsById" parameterType="int" resultType="Helps">
+    select * from helps a  	 where hid=#{value}
+  </select>
+ 
+	<insert id="insertHelps" useGeneratedKeys="true" keyProperty="id" parameterType="Helps">
+    insert into helps
+    (htitle,hdetail,addtime)
+    values
+    (#{htitle},#{hdetail},now());
+  </insert>
+	
+	<update id="updateHelps" parameterType="Helps" >
+    update helps 
+    <set>
+		<if test="htitle != null and htitle != ''">
+		    htitle = #{htitle},
+		</if>
+		<if test="hdetail != null and hdetail != ''">
+		    hdetail = #{hdetail},
+		</if>
+		<if test="addtime != null and addtime != ''">
+		    addtime = #{addtime},
+		</if>
+
+    </set>
+   <where> 
+    <if test="condition != null and condition != ''">
+      ${condition}
+    </if>
+    <if test="hid != null or hid != ''">
+      hid=#{hid}
+    </if>
+   </where>     
+  </update>	
+ 
+	
+	<delete id="deleteHelps" parameterType="int">
+    delete from  helps where hid=#{value}
+  </delete>
+
+	
+	
+</mapper>
+
+ 

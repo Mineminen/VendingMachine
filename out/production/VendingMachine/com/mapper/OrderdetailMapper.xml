@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.OrderdetailMapper">
+	<select id="findOrderdetailList"  resultType="Orderdetail">
+		select * from orderdetail
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultType="Orderdetail">
+		select a.*,gtitle as by1,photo as by2 from orderdetail a  left join goods g on a.gid = g.gid
+		<where>
+			<if test="id != null and id != 0">
+				and a.id = #{id}
+			</if>
+			<if test="no != null and no != ''">
+				and a.no = #{no}
+			</if>
+			<if test="gid != null and gid != 0">
+				and a.gid = #{gid}
+			</if>
+			<if test="quantity != null and quantity != 0">
+				and a.quantity = #{quantity}
+			</if>
+			<if test="condition != null and condition != ''">
+				${condition}
+			</if>
+
+		</where>
+
+		order by ${sort} id desc
+
+		<if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>
+
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from orderdetail a
+		<where>
+			<if test="id != null and id != 0">
+				and a.id = #{id}
+			</if>
+			<if test="no != null and no != ''">
+				and a.no = #{no}
+			</if>
+			<if test="gid != null and gid != 0">
+				and a.gid = #{gid}
+			</if>
+			<if test="quantity != null and quantity != 0">
+				and a.quantity = #{quantity}
+			</if>
+			<if test="condition != null and condition != ''">
+				${condition}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="queryOrderdetailById" parameterType="int" resultType="Orderdetail">
+		select * from orderdetail a  	 where id=#{value}
+	</select>
+
+	<insert id="insertOrderdetail" useGeneratedKeys="true" keyProperty="id" parameterType="Orderdetail">
+		insert into orderdetail
+			(no,gid,price,quantity)
+		values
+			(#{no},#{gid},#{price},#{quantity});
+	</insert>
+
+	<update id="updateOrderdetail" parameterType="Orderdetail" >
+		update orderdetail
+		<set>
+			<if test="no != null and no != ''">
+				no = #{no},
+			</if>
+			<if test="gid != null and gid != ''">
+				gid = #{gid},
+			</if>
+			<if test="price != null and price != ''">
+				price = #{price},
+			</if>
+			<if test="quantity != null and quantity != ''">
+				quantity = #{quantity},
+			</if>
+
+		</set>
+		<where>
+			<if test="condition != null and condition != ''">
+				${condition}
+			</if>
+			<if test="id != null or id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</update>
+
+
+	<delete id="deleteOrderdetail" parameterType="int">
+		delete from  orderdetail where id=#{value}
+	</delete>
+
+
+
+</mapper>
+
+ 

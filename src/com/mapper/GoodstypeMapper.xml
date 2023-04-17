@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.GoodstypeMapper">
+	<select id="findGoodstypeList"  resultType="Goodstype">
+		select * from goodstype 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultType="Goodstype">
+	    select * 
+        from goodstype a  	
+		<where>
+      		<if test="tyId != null and tyId != 0">
+		    and a.tyId = #{tyId}
+		</if>
+		<if test="tyname != null and tyname != ''">
+		    and a.tyname = #{tyname}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+
+    order by ${sort} tyId
+
+    <if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>	
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from goodstype a  
+		<where>
+      		<if test="tyId != null and tyId != 0">
+		    and a.tyId = #{tyId}
+		</if>
+		<if test="tyname != null and tyname != ''">
+		    and a.tyname = #{tyname}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+	</select>	
+	
+	<select id="queryGoodstypeById" parameterType="int" resultType="Goodstype">
+    select * from goodstype a  	 where tyId=#{value}
+  </select>
+ 
+	<insert id="insertGoodstype" useGeneratedKeys="true" keyProperty="id" parameterType="Goodstype">
+    insert into goodstype
+    (tyname)
+    values
+    (#{tyname});
+  </insert>
+	
+	<update id="updateGoodstype" parameterType="Goodstype" >
+    update goodstype 
+    <set>
+		<if test="tyname != null and tyname != ''">
+		    tyname = #{tyname},
+		</if>
+
+    </set>
+   <where> 
+    <if test="condition != null and condition != ''">
+      ${condition}
+    </if>
+    <if test="tyId != null or tyId != ''">
+      tyId=#{tyId}
+    </if>
+   </where>     
+  </update>	
+ 
+	
+	<delete id="deleteGoodstype" parameterType="int">
+    delete from  goodstype where tyId=#{value}
+  </delete>
+
+	
+	
+</mapper>
+
+ 

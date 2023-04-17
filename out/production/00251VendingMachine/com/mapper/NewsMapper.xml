@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.NewsMapper">
+	<select id="findNewsList"  resultType="News">
+		select * from news 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultType="News">
+	    select * 
+        from news a  	
+		<where>
+      		<if test="id != null and id != 0">
+		    and a.id = #{id}
+		</if>
+		<if test="title != null and title != ''">
+		    and a.title = #{title}
+		</if>
+		<if test="naddtime != null and naddtime != ''">
+		    and a.naddtime = #{naddtime}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+
+    order by ${sort} id desc
+
+    <if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>	
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from news a  
+		<where>
+      		<if test="id != null and id != 0">
+		    and a.id = #{id}
+		</if>
+		<if test="title != null and title != ''">
+		    and a.title = #{title}
+		</if>
+		<if test="naddtime != null and naddtime != ''">
+		    and a.naddtime = #{naddtime}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+	</select>	
+	
+	<select id="queryNewsById" parameterType="int" resultType="News">
+    select * from news a  	 where id=#{value}
+  </select>
+ 
+	<insert id="insertNews" useGeneratedKeys="true" keyProperty="id" parameterType="News">
+    insert into news
+    (title,nmemo,naddtime)
+    values
+    (#{title},#{nmemo},now());
+  </insert>
+	
+	<update id="updateNews" parameterType="News" >
+    update news 
+    <set>
+		<if test="title != null and title != ''">
+		    title = #{title},
+		</if>
+		<if test="nmemo != null and nmemo != ''">
+		    nmemo = #{nmemo},
+		</if>
+		<if test="naddtime != null and naddtime != ''">
+		    naddtime = #{naddtime},
+		</if>
+
+    </set>
+   <where> 
+    <if test="condition != null and condition != ''">
+      ${condition}
+    </if>
+    <if test="id != null or id != ''">
+      id=#{id}
+    </if>
+   </where>     
+  </update>	
+ 
+	
+	<delete id="deleteNews" parameterType="int">
+    delete from  news where id=#{value}
+  </delete>
+
+	
+	
+</mapper>
+
+ 

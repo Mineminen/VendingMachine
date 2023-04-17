@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.ShoppingcarMapper">
+	<select id="findShoppingcarList"  resultType="Shoppingcar">
+		select * from shoppingcar
+	</select>
+
+	<select id="query" parameterType="java.util.Map" resultType="Shoppingcar">
+		select a.*,gtitle as by1,photo as by2
+		from shoppingcar a  left join goods g on a.gid = g.gid
+		<where>
+			<if test="id != null and id != 0">
+				and a.id = #{id}
+			</if>
+			<if test="lname != null and lname != ''">
+				and a.lname = #{lname}
+			</if>
+			<if test="gid != null and gid != 0">
+				and a.gid = #{gid}
+			</if>
+			<if test="quantity != null and quantity != 0">
+				and a.quantity = #{quantity}
+			</if>
+			<if test="condition != null and condition != ''">
+				${condition}
+			</if>
+
+		</where>
+
+		order by ${sort} id desc
+
+		<if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>
+
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from shoppingcar a
+		<where>
+			<if test="id != null and id != 0">
+				and a.id = #{id}
+			</if>
+			<if test="lname != null and lname != ''">
+				and a.lname = #{lname}
+			</if>
+			<if test="gid != null and gid != 0">
+				and a.gid = #{gid}
+			</if>
+			<if test="quantity != null and quantity != 0">
+				and a.quantity = #{quantity}
+			</if>
+			<if test="condition != null and condition != ''">
+				${condition}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="queryShoppingcarById" parameterType="int" resultType="Shoppingcar">
+		select * from shoppingcar a  	 where id=#{value}
+	</select>
+
+	<insert id="insertShoppingcar" useGeneratedKeys="true" keyProperty="id" parameterType="Shoppingcar">
+		insert into shoppingcar
+			(lname,gid,quantity,price)
+		values
+			(#{lname},#{gid},#{quantity},#{price});
+	</insert>
+
+	<update id="updateShoppingcar" parameterType="Shoppingcar" >
+		update shoppingcar
+		<set>
+			<if test="lname != null and lname != ''">
+				lname = #{lname},
+			</if>
+			<if test="gid != null and gid != ''">
+				gid = #{gid},
+			</if>
+			<if test="quantity != null and quantity != ''">
+				quantity = #{quantity},
+			</if>
+			<if test="price != null and price != ''">
+				price = #{price},
+			</if>
+
+		</set>
+		<where>
+			<if test="condition != null and condition != ''">
+				${condition}
+			</if>
+			<if test="id != null or id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</update>
+
+
+	<delete id="deleteShoppingcar" parameterType="int">
+		delete from  shoppingcar where id=#{value}
+	</delete>
+
+
+
+</mapper>
+
+ 

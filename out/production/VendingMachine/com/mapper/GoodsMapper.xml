@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.GoodsMapper">
+	<select id="findGoodsList"  resultType="Goods">
+		select * from goods 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultType="Goods">
+		select a.*,tyname,ifnull(by1,0) as by1
+		from goods a  left join goodstype b on a.tyid=b.tyId
+		left join (select gid,sum(quantity) as by1 from orderdetail group by gid) c on a.gid=c.gid
+		<where>
+      		<if test="gid != null and gid != 0">
+		    and a.gid = #{gid}
+		</if>
+		<if test="tyid != null and tyid != 0">
+		    and a.tyid = #{tyid}
+		</if>
+		<if test="gtitle != null and gtitle != ''">
+		    and a.gtitle like concat('%',#{gtitle},'%')
+		</if>
+		<if test="photo != null and photo != ''">
+		    and a.photo = #{photo}
+		</if>
+		<if test="address != null and address != ''">
+		    and a.address = #{address}
+		</if>
+		<if test="gflag != null and gflag != ''">
+		    and a.gflag = #{gflag}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+
+    order by ${sort} gid desc
+
+    <if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>	
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from goods a  left join goodstype b on a.tyid=b.tyId  
+		<where>
+      		<if test="gid != null and gid != 0">
+		    and a.gid = #{gid}
+		</if>
+		<if test="tyid != null and tyid != 0">
+		    and a.tyid = #{tyid}
+		</if>
+		<if test="gtitle != null and gtitle != ''">
+		    and a.gtitle like concat('%',#{gtitle},'%')
+		</if>
+		<if test="photo != null and photo != ''">
+		    and a.photo = #{photo}
+		</if>
+		<if test="address != null and address != ''">
+		    and a.address = #{address}
+		</if>
+		<if test="gflag != null and gflag != ''">
+		    and a.gflag = #{gflag}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+	</select>	
+	
+	<select id="queryGoodsById" parameterType="int" resultType="Goods">
+		select a.*,tyname,ifnull(by1,0) as by1
+		from goods a  left join goodstype b on a.tyid=b.tyId
+					  left join (select gid,sum(quantity) as by1 from orderdetail group by gid) c on a.gid=c.gid
+		where a.gid=#{value}
+  </select>
+ 
+	<insert id="insertGoods" useGeneratedKeys="true" keyProperty="id" parameterType="Goods">
+    insert into goods
+    (tyid,gtitle,photo,address,price,gmemo,gflag)
+    values
+    (#{tyid},#{gtitle},#{photo},#{address},#{price},#{gmemo},#{gflag});
+  </insert>
+	
+	<update id="updateGoods" parameterType="Goods" >
+    update goods 
+    <set>
+		<if test="tyid != null and tyid != ''">
+		    tyid = #{tyid},
+		</if>
+		<if test="gtitle != null and gtitle != ''">
+		    gtitle = #{gtitle},
+		</if>
+		<if test="photo != null and photo != ''">
+		    photo = #{photo},
+		</if>
+		<if test="address != null and address != ''">
+		    address = #{address},
+		</if>
+		<if test="price != null and price != ''">
+		    price = #{price},
+		</if>
+		<if test="gmemo != null and gmemo != ''">
+		    gmemo = #{gmemo},
+		</if>
+		<if test="gflag != null and gflag != ''">
+		    gflag = #{gflag},
+		</if>
+
+    </set>
+   <where> 
+    <if test="condition != null and condition != ''">
+      ${condition}
+    </if>
+    <if test="gid != null or gid != ''">
+      gid=#{gid}
+    </if>
+   </where>     
+  </update>	
+ 
+	
+	<delete id="deleteGoods" parameterType="int">
+    delete from  goods where gid=#{value}
+  </delete>
+
+	
+	
+</mapper>
+
+ 

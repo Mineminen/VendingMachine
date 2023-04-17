@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.AdminMapper">
+	<select id="findAdminList"  resultType="Admin">
+		select * from admin 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultType="Admin">
+	    select * 
+        from admin a  	
+		<where>
+      		<if test="aid != null and aid != 0">
+		    and a.aid = #{aid}
+		</if>
+		<if test="lname != null and lname != ''">
+		    and a.lname = #{lname}
+		</if>
+		<if test="password != null and password != ''">
+		    and a.password = #{password}
+		</if>
+		<if test="aname != null and aname != ''">
+		    and a.aname = #{aname}
+		</if>
+		<if test="sex != null and sex != ''">
+		    and a.sex = #{sex}
+		</if>
+		<if test="tel != null and tel != ''">
+		    and a.tel = #{tel}
+		</if>
+		<if test="sf != null and sf != ''">
+		    and a.sf = #{sf}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+
+    order by ${sort} aid desc
+
+    <if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>	
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from admin a  
+		<where>
+      		<if test="aid != null and aid != 0">
+		    and a.aid = #{aid}
+		</if>
+		<if test="lname != null and lname != ''">
+		    and a.lname = #{lname}
+		</if>
+		<if test="password != null and password != ''">
+		    and a.password = #{password}
+		</if>
+		<if test="aname != null and aname != ''">
+		    and a.aname = #{aname}
+		</if>
+		<if test="sex != null and sex != ''">
+		    and a.sex = #{sex}
+		</if>
+		<if test="tel != null and tel != ''">
+		    and a.tel = #{tel}
+		</if>
+		<if test="sf != null and sf != ''">
+		    and a.sf = #{sf}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+	</select>	
+	
+	<select id="queryAdminById" parameterType="int" resultType="Admin">
+    select * from admin a  	 where aid=#{value}
+  </select>
+ 
+	<insert id="insertAdmin" useGeneratedKeys="true" keyProperty="id" parameterType="Admin">
+    insert into admin
+    (lname,password,aname,sex,tel,sf)
+    values
+    (#{lname},#{password},#{aname},#{sex},#{tel},#{sf});
+  </insert>
+	
+	<update id="updateAdmin" parameterType="Admin" >
+    update admin 
+    <set>
+		<if test="lname != null and lname != ''">
+		    lname = #{lname},
+		</if>
+		<if test="password != null and password != ''">
+		    password = #{password},
+		</if>
+		<if test="aname != null and aname != ''">
+		    aname = #{aname},
+		</if>
+		<if test="sex != null and sex != ''">
+		    sex = #{sex},
+		</if>
+		<if test="tel != null and tel != ''">
+		    tel = #{tel},
+		</if>
+		<if test="sf != null and sf != ''">
+		    sf = #{sf},
+		</if>
+
+    </set>
+   <where> 
+    <if test="condition != null and condition != ''">
+      ${condition}
+    </if>
+    <if test="aid != null or aid != ''">
+      aid=#{aid}
+    </if>
+   </where>     
+  </update>	
+ 
+	
+	<delete id="deleteAdmin" parameterType="int">
+    delete from  admin where aid=#{value}
+  </delete>
+
+	
+	
+</mapper>
+
+ 

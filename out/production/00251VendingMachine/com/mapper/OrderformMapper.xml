@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.OrderformMapper">
+	<select id="findOrderformList"  resultType="Orderform">
+		select * from orderform 
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultType="Orderform">
+	    select * 
+        from orderform a  	
+		<where>
+      		<if test="no != null and no != ''">
+		    and a.no = #{no}
+		</if>
+		<if test="lname != null and lname != ''">
+		    and a.lname = #{lname}
+		</if>
+		<if test="otime != null and otime != ''">
+		    and a.otime = #{otime}
+		</if>
+		<if test="oflag != null and oflag != ''">
+		    and a.oflag = #{oflag}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+
+    order by ${sort} no desc
+
+    <if test="page">
+			limit #{offset} ,#{pageSize}
+		</if>
+	</select>	
+	
+	<select id="getCount" parameterType="java.util.Map" resultType="Int">
+		select count(0) from orderform a  
+		<where>
+      		<if test="no != null and no != ''">
+		    and a.no = #{no}
+		</if>
+		<if test="lname != null and lname != ''">
+		    and a.lname = #{lname}
+		</if>
+		<if test="otime != null and otime != ''">
+		    and a.otime = #{otime}
+		</if>
+		<if test="oflag != null and oflag != ''">
+		    and a.oflag = #{oflag}
+		</if>
+		<if test="condition != null and condition != ''">
+		    ${condition} 
+		</if>
+
+    </where>
+	</select>	
+	
+	<select id="queryOrderformById" parameterType="String" resultType="Orderform">
+    select * from orderform a  	 where no=#{value}
+  </select>
+ 
+	<insert id="insertOrderform" useGeneratedKeys="true" keyProperty="id" parameterType="Orderform">
+    insert into orderform
+    (no,lname,omoney,otime,oflag)
+    values
+    (#{no},#{lname},#{omoney},now(),#{oflag});
+  </insert>
+	
+	<update id="updateOrderform" parameterType="Orderform" >
+    update orderform 
+    <set>
+		<if test="no != null and no != ''">
+		    no = #{no},
+		</if>
+		<if test="lname != null and lname != ''">
+		    lname = #{lname},
+		</if>
+		<if test="omoney != null and omoney != ''">
+		    omoney = #{omoney},
+		</if>
+		<if test="otime != null and otime != ''">
+		    otime = #{otime},
+		</if>
+		<if test="oflag != null and oflag != ''">
+		    oflag = #{oflag},
+		</if>
+
+    </set>
+   <where> 
+    <if test="condition != null and condition != ''">
+      ${condition}
+    </if>
+    <if test="no != null or no != ''">
+      no=#{no}
+    </if>
+   </where>     
+  </update>	
+ 
+	
+	<delete id="deleteOrderform" parameterType="String">
+    delete from  orderform where no=#{value}
+  </delete>
+
+	
+	
+</mapper>
+
+ 
