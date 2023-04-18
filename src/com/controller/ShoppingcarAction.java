@@ -20,7 +20,7 @@ public class ShoppingcarAction{
 	@Autowired
 	private ShoppingcarService shoppingcarService;
 
-	//查询所有购物车
+	// 查询所有购物车
 	@RequestMapping(value="/shoppingcarList")
 	public String shoppingcarList(Shoppingcar ser,HttpServletRequest req)throws Exception{
 
