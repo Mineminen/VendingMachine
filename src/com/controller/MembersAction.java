@@ -24,7 +24,7 @@ public class MembersAction{
 	@RequestMapping(value="/membersList")
 	public String membersList(Members ser,HttpServletRequest req)throws Exception{
 		
-		/** 分页代码**/
+		/** 分页代码111111111111111111111111111111111111111111**/
 		int offset = 0;  //记录偏移量，hibernate数据分页用到
 		int counts = 0;  //总记录数
 		try {
