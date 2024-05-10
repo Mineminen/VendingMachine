@@ -16,7 +16,7 @@ public class ReportDataAction {
 	@Autowired
 	private ReportDataService reportDataService;
 
-	//查询报表
+	//商品分类销量统计
 	@RequestMapping(value="/queryReport")
 	public String queryReport(ReportData reportdata,HttpServletRequest req) throws Exception {
 
@@ -32,7 +32,7 @@ public class ReportDataAction {
 
 	}
 
-	//查询报表
+	//热销排行榜
 	@RequestMapping(value="/queryReport2")
 		public String queryReport2(ReportData reportdata,HttpServletRequest req) throws Exception {
 
